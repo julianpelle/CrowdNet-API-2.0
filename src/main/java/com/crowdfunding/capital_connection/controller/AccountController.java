@@ -2,15 +2,154 @@ package com.crowdfunding.capital_connection.controller;
 
 
 import com.crowdfunding.capital_connection.controller.dto.AccountRequest;
+import com.crowdfunding.capital_connection.model.mapper.AccountMapper;
+import com.crowdfunding.capital_connection.model.mapper.AddressMapper;
+
+import com.crowdfunding.capital_connection.repository.entity.AccountEntity;
+import com.crowdfunding.capital_connection.service.AccountService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
 
+    private final AccountService accountService;
+    private final AccountMapper accountMapper;
+    private final AddressMapper addressMapper;
 
+    @Autowired
+    public AccountController(AccountService accountService, AccountMapper accountMapper, AddressMapper addressMapper) {
+        this.accountService = accountService;
+        this.accountMapper = accountMapper;
+        this.addressMapper = addressMapper;
+    }
+
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<AccountEntity> getAccount(@PathVariable Long userId) {
+        AccountEntity account = accountService.getAccountById(userId);
+        return ResponseEntity.ok(account);
+    }
+
+    /*@Operation(summary = "Add a favorite entrepreneurship for a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Favorite added successfully"),
+            @ApiResponse(responseCode = "404", description = "User or Entrepreneurship not found")
+    })
+    @PostMapping("/{userId}/favorites/{entrepreneurshipId}")
+    public ResponseEntity<String> addFavorite(
+            @PathVariable Long userId,
+            @PathVariable Long entrepreneurshipId) {
+        accountService.addFavorite(userId, entrepreneurshipId);
+        return ResponseEntity.ok("Favorite added successfully");
+    }
+
+    @Operation(summary = "Remove a favorite entrepreneurship for a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Favorite removed successfully"),
+            @ApiResponse(responseCode = "404", description = "User or Entrepreneurship not found")
+    })
+    @DeleteMapping("/{userId}/favorites/{entrepreneurshipId}")
+    public ResponseEntity<String> removeFavorite(
+            @PathVariable Long userId,
+            @PathVariable Long entrepreneurshipId) {
+        accountService.removeFavorite(userId, entrepreneurshipId);
+        return ResponseEntity.ok("Favorite removed successfully");
+    }
+
+    @Operation(summary = "Get all favorite entrepreneurships of a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of favorites retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    @GetMapping("/{userId}/favorites")
+    public ResponseEntity<List<EntrepreneurshipEntity>> getFavorites(@PathVariable Long userId) {
+        List<EntrepreneurshipEntity> favorites = accountService.getFavorites(userId);
+        return ResponseEntity.ok(favorites);
+    }
+
+    @PostMapping
+    @Operation(summary = "Create a new account", description = "Creates an account and associates it with an address")
+    public ResponseEntity<AccountRequest> createAccount(@RequestBody AccountRequest accountRequest) {
+        AccountEntity accountEntity = accountMapper.toEntity(accountRequest);
+        AccountEntity createdAccount = accountService.createAccount(accountEntity);
+        return ResponseEntity.ok(accountMapper.toDto(createdAccount));
+    }
+
+    @PutMapping("/{accountId}")
+    public ResponseEntity<AccountRequest> updateAccount(
+            @PathVariable Long accountId,
+            @RequestBody AccountRequest accountRequest) {
+
+        AccountEntity accountEntity = accountMapper.toEntity(accountRequest);
+        accountEntity.setId(accountId);
+
+        AccountEntity updatedAccount = accountService.updateAccount(accountEntity);
+
+        AccountRequest updatedAccountRequest = accountMapper.toDto(updatedAccount);
+        return ResponseEntity.ok(updatedAccountRequest);
+    }
+
+    @PutMapping("/{accountId}/address")
+    public ResponseEntity<AddressRequest> updateAddress(
+            @PathVariable Long accountId,
+            @RequestBody AddressRequest addressRequest) {
+
+        AddressEntity addressEntity = addressMapper.toEntity(addressRequest);
+
+        AccountEntity accountEntity = accountService.getAccountById(accountId);
+
+        addressEntity.setAccount(accountEntity);
+
+        AddressEntity updatedAddress = accountService.updateAddress(addressEntity);
+
+        AddressRequest updatedAddressRequest = addressMapper.toDto(updatedAddress);
+        return ResponseEntity.ok(updatedAddressRequest);
+    }
+
+    @PatchMapping("/{accountId}")
+    @Operation(summary = "Update Account partially")
+    public ResponseEntity<AccountRequest> patchAccount(
+            @PathVariable Long accountId,
+            @RequestBody AccountRequest accountRequest) {
+
+        AccountEntity updatedAccount = accountService.updateAccountPartial(accountId, accountRequest);
+
+        if (updatedAccount == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        AccountRequest updatedAccountRequest = accountMapper.toDto(updatedAccount);
+        return ResponseEntity.ok(updatedAccountRequest);
+    }
+
+    @PatchMapping("/{accountId}/address")
+    @Operation(summary = "Update Address partially for an Account")
+    public ResponseEntity<AddressRequest> patchAddress(
+            @PathVariable Long accountId,
+            @RequestBody AddressRequest addressRequest) {
+
+        AddressEntity updatedAddress = accountService.updateAddressPartial(accountId, addressRequest);
+
+        if (updatedAddress == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        AddressRequest updatedAddressRequest = addressMapper.toDto(updatedAddress);
+        return ResponseEntity.ok(updatedAddressRequest);
+    }
+
+    @DeleteMapping("/{accountId}")
+    public ResponseEntity<?> deactivateAccount(
+            @PathVariable Long accountId) {
+
+        accountService.deactivateAccountAndAddress(accountId);
+
+        return ResponseEntity.ok("Account and associated address deactivated successfully");
+    }*/
 }
+

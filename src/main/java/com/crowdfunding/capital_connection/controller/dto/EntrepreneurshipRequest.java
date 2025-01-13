@@ -31,13 +31,13 @@ public class EntrepreneurshipRequest {
     @Schema(description = "Funding goal of the entrepreneurship", example = "10000.0")
     private BigDecimal goal;
 
-    @Schema(description = "Funding goal of the entrepreneurship", example = "10000.0")
+    @Schema(description = "Category of the entrepreneurship", example = "Health")
     private String category;
 
     @Schema(description = "Collected of the entrepreneurship", example = "10000.0")
     private BigDecimal collected;
 
-    @Schema(description = "activated of the entrepreneurship", example = "10000.0")
+    @Schema(description = "activated of the entrepreneurship", example = "true")
     private Boolean activated;
 
 }

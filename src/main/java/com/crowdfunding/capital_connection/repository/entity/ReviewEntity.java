@@ -40,6 +40,9 @@ public class ReviewEntity {
     @JoinColumn(name = "entrepreneurship_id", referencedColumnName = "id", nullable = false, updatable = false)
     private EntrepreneurshipEntity entrepreneurship;
 
+    @Column(nullable = false)
+    private Boolean isActivated;
+
     public ReviewEntity() {}
 
     public ReviewEntity(Long id, String username, float stars, String reviewText, AccountEntity account, EntrepreneurshipEntity entrepreneurship) {
@@ -49,5 +52,11 @@ public class ReviewEntity {
         this.reviewText = reviewText;
         this.account = account;
         this.entrepreneurship = entrepreneurship;
+        this.isActivated = true;
+
+    }
+
+    public void deactivate() {
+        this.isActivated = false;
     }
 }

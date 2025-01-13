@@ -55,7 +55,7 @@ public class EntrepreneurshipEntity {
     private List<String> videos;
 
     @Column(nullable = false)
-    private Boolean isActivated = true;
+    private Boolean isActivated;
 
     @OneToMany(mappedBy = "entrepreneurship", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviews = new ArrayList<>();
@@ -71,7 +71,7 @@ public class EntrepreneurshipEntity {
     public EntrepreneurshipEntity() {
     }
 
-    public EntrepreneurshipEntity(Long id, AccountEntity account, String name, String description, BigDecimal goal, BigDecimal collected, String category, List<String> images, List<String> videos, Boolean isActivated) {
+    public EntrepreneurshipEntity(Long id, AccountEntity account, String name, String description, BigDecimal goal, BigDecimal collected, String category, List<String> images, List<String> videos) {
         this.id = id;
         this.account = account;
         this.name = name;
@@ -81,9 +81,13 @@ public class EntrepreneurshipEntity {
         this.category = category;
         this.images = images;
         this.videos = videos;
-        this.isActivated = isActivated;
+        this.isActivated = true;
         this.reviews = new ArrayList<>();
         this.usersWhoFavorited = new ArrayList<>();
         this.donations = new ArrayList<>();
+    }
+
+    public void deactivate() {
+        this.isActivated = false;
     }
 }

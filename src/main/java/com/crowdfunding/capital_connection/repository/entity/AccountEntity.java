@@ -84,6 +84,8 @@ public class AccountEntity {
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviews = new ArrayList<>();
 
+    @Column(nullable = false)
+    private Boolean isActivated;
 
     public AccountEntity() {
     }
@@ -104,5 +106,11 @@ public class AccountEntity {
         this.donations = new ArrayList<>();
         this.favoriteEntrepreneurships = new ArrayList<>();
         this.reviews = new ArrayList<>();
+        this.isActivated = true;
+
+    }
+
+    public void deactivate() {
+        this.isActivated = false;
     }
 }

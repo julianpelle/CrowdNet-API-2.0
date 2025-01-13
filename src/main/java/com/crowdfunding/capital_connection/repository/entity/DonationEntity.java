@@ -32,6 +32,9 @@ public class DonationEntity {
     @JoinColumn(name = "entrepreneurship_id", referencedColumnName = "id", nullable = false)
     private EntrepreneurshipEntity entrepreneurship;
 
+    @Column(nullable = false)
+    private Boolean isActivated;
+
     public DonationEntity() {
     }
 
@@ -41,8 +44,12 @@ public class DonationEntity {
         this.date = date;
         this.account = account;
         this.entrepreneurship = entrepreneurship;
+        this.isActivated = true;
+
     }
 
-
+    public void deactivate() {
+        this.isActivated = false;
+    }
 
 }

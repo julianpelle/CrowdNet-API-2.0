@@ -1,4 +1,5 @@
 package com.crowdfunding.capital_connection.controller.dto;
+import com.crowdfunding.capital_connection.repository.entity.EntrepreneurshipEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,6 +41,12 @@ public class AccountRequest {
 
     @Schema(description = "How much money does the user have in their account (only if they have a business in USD)", example = "100000")
     private BigDecimal wallet;
+
+    @Schema(description = "ID of the address of the user", example = "1")
+    private ArrayList<EntrepreneurshipRequest> favoriteEntrepreneurships;
+
+    @Schema(description = "if this data is activated", example = "true")
+    private Boolean activated;
 
     @Schema(description = "ID of the address of the user", example = "1")
     private Long id_address;

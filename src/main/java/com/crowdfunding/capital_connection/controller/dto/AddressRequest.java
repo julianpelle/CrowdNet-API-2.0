@@ -26,4 +26,7 @@ public class AddressRequest {
 
     @Schema(description = "Type of address", example = "HOME")
     private String type;
+
+    @Schema(description = "if this data is activated", example = "true")
+    private Boolean activated;
 }

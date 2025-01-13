@@ -27,4 +27,7 @@ public class DonationRequest {
     @Schema(description = "ID of the user that makes the donation", example = "5")
     private Long id_user;
 
+    @Schema(description = "if this data is activated", example = "true")
+    private Boolean activated;
+
 }

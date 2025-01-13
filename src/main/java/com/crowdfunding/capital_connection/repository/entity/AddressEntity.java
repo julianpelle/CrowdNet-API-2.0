@@ -35,6 +35,9 @@ public class AddressEntity {
     @OneToOne(mappedBy = "address")
     private AccountEntity account;
 
+    @Column(nullable = false)
+    private Boolean isActivated;
+
     public AddressEntity() {
     }
 
@@ -46,6 +49,11 @@ public class AddressEntity {
         this.province = province;
         this.type = type;
         this.account = account;
+        this.isActivated = true;
+
     }
 
+    public void deactivate() {
+        this.isActivated = false;
+    }
 }
