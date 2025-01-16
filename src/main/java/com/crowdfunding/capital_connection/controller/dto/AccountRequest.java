@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 @Schema(description = "Payload for Account information")
 @Getter
@@ -43,12 +44,12 @@ public class AccountRequest {
     private BigDecimal wallet;
 
     @Schema(description = "ID of the address of the user", example = "1")
-    private ArrayList<EntrepreneurshipRequest> favoriteEntrepreneurships;
+    private List<Long> favoriteEntrepreneurshipIds;
 
     @Schema(description = "if this data is activated", example = "true")
-    private Boolean activated;
+    private Boolean isActivated;
 
-    @Schema(description = "ID of the address of the user", example = "1")
-    private Long id_address;
+    @Schema(description = "Address object", example = "1")
+    private AddressRequest address;
 
 }

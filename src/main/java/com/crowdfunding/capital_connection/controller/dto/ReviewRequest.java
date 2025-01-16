@@ -25,6 +25,6 @@ public class ReviewRequest {
     private Long id_user;
 
     @Schema(description = "if this data is activated", example = "true")
-    private Boolean activated;
+    private Boolean isActivated;
 
 }

@@ -19,9 +19,6 @@ public class ReviewEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name must not be blank")
-    @Column(nullable = false, length = 50)
-    private String username;
 
     @NotNull(message = "Stars must not be null")
     @Positive(message = "Stars must be positive")
@@ -40,14 +37,12 @@ public class ReviewEntity {
     @JoinColumn(name = "entrepreneurship_id", referencedColumnName = "id", nullable = false, updatable = false)
     private EntrepreneurshipEntity entrepreneurship;
 
-    @Column(nullable = false)
-    private Boolean isActivated;
+    private Boolean isActivated=true;
 
     public ReviewEntity() {}
 
-    public ReviewEntity(Long id, String username, float stars, String reviewText, AccountEntity account, EntrepreneurshipEntity entrepreneurship) {
+    public ReviewEntity(Long id, float stars, String reviewText, AccountEntity account, EntrepreneurshipEntity entrepreneurship) {
         this.id = id;
-        this.username = username;
         this.stars = stars;
         this.reviewText = reviewText;
         this.account = account;

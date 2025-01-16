@@ -31,9 +31,9 @@ public class AccountService {
     @Transactional
     public void addFavorite(Long userId, Long entrepreneurshipId) {
         AccountEntity account = accountRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User dont finded"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
         EntrepreneurshipEntity entrepreneurship = entrepreneurshipRepository.findById(entrepreneurshipId)
-                .orElseThrow(() -> new RuntimeException("Entrepreneurship dont finded"));
+                .orElseThrow(() -> new RuntimeException("Entrepreneurship not found"));
 
         account.getFavoriteEntrepreneurships().add(entrepreneurship);
         accountRepository.save(account);
@@ -42,9 +42,9 @@ public class AccountService {
     @Transactional
     public void removeFavorite(Long userId, Long entrepreneurshipId) {
         AccountEntity account = accountRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User dont finded"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
         EntrepreneurshipEntity entrepreneurship = entrepreneurshipRepository.findById(entrepreneurshipId)
-                .orElseThrow(() -> new RuntimeException("Entrepreneurship dont finded"));
+                .orElseThrow(() -> new RuntimeException("Entrepreneurship not found"));
         account.getFavoriteEntrepreneurships().remove(entrepreneurship);
         accountRepository.save(account);
     }
@@ -52,7 +52,7 @@ public class AccountService {
     @Transactional
     public List<EntrepreneurshipEntity> getFavorites(Long userId) {
         AccountEntity account = accountRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User dont finded"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
         return account.getFavoriteEntrepreneurships();
     }
 
@@ -97,7 +97,6 @@ public class AccountService {
         return addressRepository.save(addressEntity);
     }
 
-
     @Transactional
     public AccountEntity updateAccountPartial(Long accountId, AccountRequest accountRequest) {
         AccountEntity accountEntity = accountRepository.findById(accountId)
@@ -131,7 +130,6 @@ public class AccountService {
 
         return accountRepository.save(accountEntity);
     }
-
 
     @Transactional
     public AddressEntity updateAddressPartial(Long accountId, AddressRequest addressRequest) {
@@ -176,5 +174,4 @@ public class AccountService {
 
         accountRepository.save(accountEntity);
     }
-
 }

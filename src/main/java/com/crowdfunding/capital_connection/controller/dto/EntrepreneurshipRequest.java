@@ -20,13 +20,13 @@ public class EntrepreneurshipRequest {
     private String name;
 
     @Schema(description = "Images of the entrepreneurship saved on Links")
-    private ArrayList<String> images;
+    private List<String> images;
 
     @Schema(description = "Description of the entrepreneurship", example = "A project focused on eco-friendly solutions.")
     private String description;
 
     @Schema(description = "Videos of the entrepreneurship saved on Links")
-    private ArrayList<String> videos;
+    private List<String> videos;
 
     @Schema(description = "Funding goal of the entrepreneurship", example = "10000.0")
     private BigDecimal goal;
@@ -38,6 +38,9 @@ public class EntrepreneurshipRequest {
     private BigDecimal collected;
 
     @Schema(description = "activated of the entrepreneurship", example = "true")
-    private Boolean activated;
+    private Boolean isActivated;
+
+    @Schema(description = "Id of the account creator", example = "true")
+    private Long id_account;
 
 }

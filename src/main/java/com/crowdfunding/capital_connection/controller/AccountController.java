@@ -1,17 +1,22 @@
 package com.crowdfunding.capital_connection.controller;
 
-
 import com.crowdfunding.capital_connection.controller.dto.AccountRequest;
+import com.crowdfunding.capital_connection.controller.dto.AddressRequest;
 import com.crowdfunding.capital_connection.model.mapper.AccountMapper;
 import com.crowdfunding.capital_connection.model.mapper.AddressMapper;
-
 import com.crowdfunding.capital_connection.repository.entity.AccountEntity;
+import com.crowdfunding.capital_connection.repository.entity.AddressEntity;
+import com.crowdfunding.capital_connection.repository.entity.EntrepreneurshipEntity;
 import com.crowdfunding.capital_connection.service.AccountService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
@@ -28,14 +33,13 @@ public class AccountController {
         this.addressMapper = addressMapper;
     }
 
-
     @GetMapping("/{userId}")
     public ResponseEntity<AccountEntity> getAccount(@PathVariable Long userId) {
         AccountEntity account = accountService.getAccountById(userId);
         return ResponseEntity.ok(account);
     }
 
-    /*@Operation(summary = "Add a favorite entrepreneurship for a user")
+    @Operation(summary = "Add a favorite entrepreneurship for a user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Favorite added successfully"),
             @ApiResponse(responseCode = "404", description = "User or Entrepreneurship not found")
@@ -150,6 +154,5 @@ public class AccountController {
         accountService.deactivateAccountAndAddress(accountId);
 
         return ResponseEntity.ok("Account and associated address deactivated successfully");
-    }*/
+    }
 }
-

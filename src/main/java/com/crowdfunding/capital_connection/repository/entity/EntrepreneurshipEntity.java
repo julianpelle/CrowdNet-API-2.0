@@ -1,5 +1,8 @@
 package com.crowdfunding.capital_connection.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -54,14 +57,14 @@ public class EntrepreneurshipEntity {
     @Column(name = "link_video")
     private List<String> videos;
 
-    @Column(nullable = false)
-    private Boolean isActivated;
+    private Boolean isActivated=true;
 
     @OneToMany(mappedBy = "entrepreneurship", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviews = new ArrayList<>();
 
 
     @ManyToMany(mappedBy = "favoriteEntrepreneurships", fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<AccountEntity> usersWhoFavorited = new ArrayList<>();
 
     @OneToMany(mappedBy = "entrepreneurship", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

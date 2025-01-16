@@ -1,11 +1,14 @@
 package com.crowdfunding.capital_connection.model.mapper;
 
 import com.crowdfunding.capital_connection.controller.dto.AccountRequest;
+import com.crowdfunding.capital_connection.controller.dto.AddressRequest;
 import com.crowdfunding.capital_connection.repository.entity.AccountEntity;
 import com.crowdfunding.capital_connection.repository.entity.AddressEntity;
+import com.crowdfunding.capital_connection.repository.entity.EntrepreneurshipEntity;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 @Component
 public class AccountMapper {
@@ -22,12 +25,11 @@ public class AccountMapper {
         account.setYearsOfExperience(dto.getYearsOfExperience());
         account.setIndustry(dto.getIndustry());
         account.setWallet(dto.getWallet());
+        account.setIsActivated(dto.getIsActivated());
+        AddressMapper addressMapper = new AddressMapper();
+        AddressEntity address = addressMapper.toEntity(dto.getAddress());
+        account.setAddress(address);
 
-        if (dto.getId_address() != null) {
-            AddressEntity address = new AddressEntity();
-            address.setId(dto.getId_address());
-            account.setAddress(address);
-        }
 
         return account;
     }
@@ -44,11 +46,14 @@ public class AccountMapper {
         dto.setYearsOfExperience(entity.getYearsOfExperience());
         dto.setIndustry(entity.getIndustry());
         dto.setWallet(entity.getWallet());
-
-        if (entity.getAddress() != null) {
-            dto.setId_address(entity.getAddress().getId());
-        }
-
+        dto.setIsActivated(entity.getIsActivated());
+        AddressMapper addressMapper = new AddressMapper();
+        AddressRequest address = addressMapper.toDto(entity.getAddress());
+        dto.setAddress(address);
+        dto.setFavoriteEntrepreneurshipIds(entity.getFavoriteEntrepreneurships()
+                .stream()
+                .map(EntrepreneurshipEntity::getId)
+                .collect(Collectors.toList()));
         return dto;
     }
 }

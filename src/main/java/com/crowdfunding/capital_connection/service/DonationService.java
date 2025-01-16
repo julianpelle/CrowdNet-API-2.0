@@ -1,17 +1,15 @@
 package com.crowdfunding.capital_connection.service;
 
+import com.crowdfunding.capital_connection.model.mapper.DonationMapper;
 import com.crowdfunding.capital_connection.repository.AccountRepository;
 import com.crowdfunding.capital_connection.repository.DonationRepository;
 import com.crowdfunding.capital_connection.repository.EntrepreneurshipRepository;
-import com.crowdfunding.capital_connection.repository.entity.AccountEntity;
 import com.crowdfunding.capital_connection.repository.entity.DonationEntity;
-import com.crowdfunding.capital_connection.repository.entity.EntrepreneurshipEntity;
+import com.crowdfunding.capital_connection.controller.dto.DonationRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,71 +25,38 @@ public class DonationService {
     @Autowired
     private EntrepreneurshipRepository entrepreneurshipRepository;
 
+    @Autowired
+    private DonationMapper donationMapper;
+
+    /**
+     * Crea una nueva donación a partir de un objeto DonationRequest.
+     */
     @Transactional
-    public DonationEntity createDonation(Long accountId, Long entrepreneurshipId, BigDecimal amount, Date date) {
-        AccountEntity account = accountRepository.findById(accountId)
+    public DonationRequest createDonation(DonationRequest donationRequest) {
+        accountRepository.findById(donationRequest.getId_user())
                 .orElseThrow(() -> new RuntimeException("Account not found"));
 
-        EntrepreneurshipEntity entrepreneurship = entrepreneurshipRepository.findById(entrepreneurshipId)
+        entrepreneurshipRepository.findById(donationRequest.getId_entrepreneurship())
                 .orElseThrow(() -> new RuntimeException("Entrepreneurship not found"));
 
-        DonationEntity donation = new DonationEntity();
-        donation.setAccount(account);
-        donation.setEntrepreneurship(entrepreneurship);
-        donation.setAmount(amount);
-        donation.setDate((java.sql.Date) date);
+        DonationEntity donationEntity = donationMapper.toEntity(donationRequest);
 
-        return donationRepository.save(donation);
+        DonationEntity savedEntity = donationRepository.save(donationEntity);
+
+        return donationMapper.toDto(savedEntity);
     }
 
+    /**
+     * Obtiene todas las donaciones realizadas por un usuario específico.
+     */
     @Transactional
-    public DonationEntity getDonationById(Long id) {
-        return donationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Donation not found"));
-    }
-
-    @Transactional
-    public List<DonationEntity> getAllDonations() {
-        return donationRepository.findAll();
-    }
-
-    @Transactional
-    public List<DonationEntity> getDonationsByAccountId(Long accountId) {
-        AccountEntity account = accountRepository.findById(accountId)
+    public List<DonationRequest> getDonationsByAccountId(Long accountId) {
+        accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
 
         return donationRepository.findAll().stream()
-                .filter(donation -> donation.getAccount().equals(account))
+                .filter(donation -> donation.getAccount().getId().equals(accountId))
+                .map(donationMapper::toDto)
                 .collect(Collectors.toList());
     }
-
-    @Transactional
-    public List<DonationEntity> getDonationsByEntrepreneurshipId(Long entrepreneurshipId) {
-        EntrepreneurshipEntity entrepreneurship = entrepreneurshipRepository.findById(entrepreneurshipId)
-                .orElseThrow(() -> new RuntimeException("Entrepreneurship not found"));
-
-        return donationRepository.findAll().stream()
-                .filter(donation -> donation.getEntrepreneurship().equals(entrepreneurship))
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public DonationEntity updateDonation(Long id, BigDecimal amount, Date date) {
-        DonationEntity donation = donationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Donation not found"));
-
-        donation.setAmount(amount);
-        donation.setDate((java.sql.Date) date);
-
-        return donationRepository.save(donation);
-    }
-
-    @Transactional
-    public void deleteDonation(Long id) {
-        DonationEntity donation = donationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Donation not found"));
-
-        donationRepository.delete(donation);
-    }
-
 }

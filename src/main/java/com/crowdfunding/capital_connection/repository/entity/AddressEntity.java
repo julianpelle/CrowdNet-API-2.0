@@ -35,8 +35,7 @@ public class AddressEntity {
     @OneToOne(mappedBy = "address")
     private AccountEntity account;
 
-    @Column(nullable = false)
-    private Boolean isActivated;
+    private Boolean isActivated=true;
 
     public AddressEntity() {
     }

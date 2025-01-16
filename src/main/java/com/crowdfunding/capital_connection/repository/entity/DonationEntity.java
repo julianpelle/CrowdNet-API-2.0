@@ -32,8 +32,7 @@ public class DonationEntity {
     @JoinColumn(name = "entrepreneurship_id", referencedColumnName = "id", nullable = false)
     private EntrepreneurshipEntity entrepreneurship;
 
-    @Column(nullable = false)
-    private Boolean isActivated;
+    private Boolean isActivated=true;
 
     public DonationEntity() {
     }
