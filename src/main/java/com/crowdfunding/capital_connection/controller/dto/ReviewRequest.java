@@ -24,6 +24,10 @@ public class ReviewRequest {
     @Schema(description = "ID of the user that makes the review", example = "5")
     private Long id_user;
 
+
+    @Schema(description = "Username of the user that makes the review", example = "5")
+    private String username;
+
     @Schema(description = "if this data is activated", example = "true")
     private Boolean isActivated;
 
